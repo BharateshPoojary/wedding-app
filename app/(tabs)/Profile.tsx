@@ -29,14 +29,20 @@ import appJson from "../../app.json";
 import { Ionicons } from "@expo/vector-icons";
 
 const staticData = [
-  { id: "1", title: "Venues",dropdown:[{list:"View All Venues"},{list:"Banquet Halls"},{list:"Marriage Garden/Lawns"},{list:"Wedding Resorts"},{list:"Small Function/PartyHalls"},{list:"Destination Wedding Venues"},{list:"Kalyana Mandapams"},{list:"4 Star & Above Wedding Hotels"}] },
-  { id: "2", title: "Photographers", dropdown:[{list:"Photographers"}] },
-  { id: "3", title: "Makeup",  dropdown:[{list:"Bridal Makeup"},{list:"Family Makeup"}] },
-  { id: "4", title: "Pre Wedding Shoot", dropdown:[{list:"Pre Wedding Shoot Locations"},{list:"Pre Wedding Photographers"}]  },
-  { id: "5", title: "Planning & Decorations", dropdown:[{list:"Wedding Planners"},{list:"Decorators"}]},
-  { id: "6", title: "Bridal Wear", dropdown:[{list:"View All Bridal Wear"},{list:"Bridal Lehengas"},{list:"Kanjeevaram/Silk Sarees"},{list:"Cocktail Gowns"},{list:"Trousseau Sarees"},{list:"Bridal Lehenga on Rent"}] },
-  { id: "7",  title: "Groom Wear", dropdown:[{list:"View All Groom Wear"},{list:"Sherwani"},{list:"Wedding Suits/Tuxes"},{list:"Sherwani On Rent"}] },
- 
+  { id: "1", icon: "mail-unread-outline", title: "Inbox" },
+  { id: "2", icon: "calendar-outline", title: "My Bookings" },
+  { id: "3", icon: "bonfire-outline", title: "Planning", page: "Planning" },
+  { id: "4", icon: "create-outline", title: "Write a Review" },
+  { id: "5", icon: "gift-outline", title: "Packages" },
+  { id: "6", icon: "alert-outline", title: "Genie Recommendations" },
+  { id: "7", icon: "people-outline", title: "Join A Wedding" },
+  { id: "8", icon: "bag-handle-outline", title: "Shop" },
+  { id: "9", icon: "megaphone-outline", title: "Promotions" },
+  { id: "10", icon: "call-outline", title: "Contact Support" },
+  { id: "11", icon: "document-text-outline", title: "Information" },
+  { id: "12", icon: "star-outline", title: "Rate on Play Store" },
+  { id: "13", icon: "share-social-outline", title: "Share App" },
+  { id: "14", icon: "log-out-outline", title: "Log Out" },
 ];
 
 const Profile = () => {
@@ -59,8 +65,15 @@ const Profile = () => {
         {staticData.map((item) => (
           <TouchableOpacity
             key={item.id}
-            style={styles.listItem}  
+            style={styles.listItem}
+            onPress={() => navigation.navigate(item.page)}
           >
+            <Ionicons
+              name={item.icon}
+              size={20}
+              color="#000"
+              style={styles.icon}
+            />
             <View style={styles.itemView}>
               <Text style={styles.itemTitle}>{item.title}</Text>
             </View>
