@@ -1,165 +1,116 @@
-import React, { useState, useContext } from "react";
-import {
-  AppRegistry,
-  View,
-  ScrollView,
-  Text,
-  Image,
-  Pressable,
-  StyleSheet,
-  TouchableOpacity,
-  Alert,
-  FlatList,
-} from "react-native";
-import {
-  TextInput as TextInputMaterial,
-  IconButton,
-  Snackbar,
-  List,
-} from "react-native-paper";
-import { LinearGradient } from "expo-linear-gradient";
-import axios from "axios";
-import { Card } from "react-native-paper";
-import * as Device from "expo-device";
-import { CommonActions } from "@react-navigation/native";
-import UserSessionContext from "./UserSessionContext";
-import Spinner from "react-native-loading-spinner-overlay";
-import COLORS from "./Colors"
-import appJson from "../../app.json";
-import { Ionicons } from "@expo/vector-icons";
+import React from 'react';
+import { View, Text, ScrollView, Image, StyleSheet, TouchableOpacity } from 'react-native';
 
-const staticData = [
-  { id: "1", title: "Venues",dropdown:[{list:"View All Venues"},{list:"Banquet Halls"},{list:"Marriage Garden/Lawns"},{list:"Wedding Resorts"},{list:"Small Function/PartyHalls"},{list:"Destination Wedding Venues"},{list:"Kalyana Mandapams"},{list:"4 Star & Above Wedding Hotels"}] },
-  { id: "2", title: "Photographers", dropdown:[{list:"Photographers"}] },
-  { id: "3", title: "Makeup",  dropdown:[{list:"Bridal Makeup"},{list:"Family Makeup"}] },
-  { id: "4", title: "Pre Wedding Shoot", dropdown:[{list:"Pre Wedding Shoot Locations"},{list:"Pre Wedding Photographers"}]  },
-  { id: "5", title: "Planning & Decorations", dropdown:[{list:"Wedding Planners"},{list:"Decorators"}]},
-  { id: "6", title: "Bridal Wear", dropdown:[{list:"View All Bridal Wear"},{list:"Bridal Lehengas"},{list:"Kanjeevaram/Silk Sarees"},{list:"Cocktail Gowns"},{list:"Trousseau Sarees"},{list:"Bridal Lehenga on Rent"}] },
-  { id: "7",  title: "Groom Wear", dropdown:[{list:"View All Groom Wear"},{list:"Sherwani"},{list:"Wedding Suits/Tuxes"},{list:"Sherwani On Rent"}] },
- 
-];
+const VendorCategories = () => {
+  const categories = [
+    { title: 'Venues', subtitle: 'Banquet Halls, Marriage Gardens', image: 'https://image.wedmegood.com/resized/250X/uploads/m_v_cat_image/1/venues.jpg' },
+    { title: 'Photographers', subtitle: 'Photographers', image: 'https://image.wedmegood.com/resized/250X/uploads/m_v_cat_image/2/photographers.jpg' },
+    { title: 'Makeup', subtitle: 'Bridal Makeup, Family Makeup', image: 'https://image.wedmegood.com/resized/250X/uploads/m_v_cat_image/3/makeup.jpg' },
+    { title: 'Pre Wedding Shoot', subtitle: 'Pre Wedding Shoot Locations', image: 'https://image.wedmegood.com/resized/250X/uploads/m_v_cat_image/1/venues.jpg' },
+    { title: 'Planning & Decor', subtitle: 'Wedding Planners, Decorators', image: 'https://image.wedmegood.com/resized/250X/uploads/m_v_cat_image/7/planning-decor.jpg' },
+    { title: 'Bridal Wear', subtitle: 'Bridal Lehengas, Kanjeevaram Sarees', image: 'https://image.wedmegood.com/resized/250X/uploads/m_v_cat_image/4/bridal-wear.jpg' },
+  ];
 
-const Profile = () => {
   return (
-    <View style={{ flex: 1, backgroundColor: COLORS.White }}>
+    <View style={styles.container}>
       <View style={styles.header}>
-        <Image
-          source={require("../../assets/images/icon.png")}
-          style={styles.profileImage}
-        />
-        <View style={styles.headerText}>
-          <Text style={styles.title}>Profile</Text>
-          <TouchableOpacity>
-            <Text style={styles.subTitle}>View Profile</Text>
-          </TouchableOpacity>
-        </View>
-        {/* <View style={styles.horizontalLine} /> */}
+        <Text style={styles.headerTitle}>Vendor Categories</Text>
+        <TouchableOpacity>
+          <Text style={styles.cityDropdown}>All Cities ▾</Text>
+        </TouchableOpacity>
       </View>
-      <ScrollView style={styles.container}>
-        {staticData.map((item) => (
-          <TouchableOpacity
-            key={item.id}
-            style={styles.listItem}  
-          >
-            <View style={styles.itemView}>
-              <Text style={styles.itemTitle}>{item.title}</Text>
+      <ScrollView>
+        {categories.map((category, index) => (
+          <View key={index} style={styles.categoryCard}>
+            <View style={styles.textContainer}>
+              <Text style={styles.categoryTitle}>{category.title} ▾</Text>
+              <Text style={styles.categorySubtitle}>{category.subtitle}</Text>
             </View>
-          </TouchableOpacity>
+            <Image source={{ uri: category.image }} style={styles.categoryImage} />
+          </View>
         ))}
       </ScrollView>
+      <View style={styles.footer}>
+        <TouchableOpacity style={styles.footerButton}>
+          <Text style={styles.footerText}>FOR YOU</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.footerButton}>
+          <Text style={styles.footerText}>VENDORS</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.footerButton}>
+          <Text style={styles.footerText}>E-INVITES</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.footerButton}>
+          <Text style={styles.footerText}>IDEAS</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.footerButton}>
+          <Text style={styles.footerText}>GENIE</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  //   container: {
-  //     flex: 1,
-  //     padding: 15,
-  //   },
-
-  headerIcons: {
-    backgroundColor: COLORS.LigntGray,
-    padding: 5,
-    borderRadius: 8,
-  },
-
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    padding: 10,
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    zIndex: 1000,
-  },
-  headerText: {
-    left: 10,
-    fontSize: 17,
-    fontWeight: "bold",
-    color: COLORS.Black,
-  },
-  title: {
-    fontWeight: "bold",
-    fontSize: 18,
-  },
-  subTitle: {
-    fontSize: 12,
-  },
   container: {
     flex: 1,
-    backgroundColor: COLORS.White,
-    paddingHorizontal: 20,
-    marginTop: 80,
-    marginBottom: 70,
-    borderTopWidth: 1,
-    borderBottomColor: "#ddd",
+    backgroundColor: '#fff',
   },
-  listItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingVertical: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: "#ddd",
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 16,
   },
-  icon: {
-    marginRight: 12,
+  headerTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
   },
-  itemView: {},
-  itemTitle: {
+  cityDropdown: {
     fontSize: 16,
+    color: '#E91E63',
   },
-  horizontalLine: {
-    marginVertical: 10,
-    height: 1,
-    backgroundColor: "#ddd",
-  },
-  profileSection: {
-    alignItems: "center",
-    justifyContent: "space-evenly",
-  },
-  profileCard: {
-    borderRadius: 40,
-    width: 80,
-    height: 80,
-    marginTop: 18,
-    overflow: "hidden",
+  categoryCard: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    margin: 10,
+    padding: 10,
+    backgroundColor: '#f9f9f9',
+    borderRadius: 8,
     elevation: 2,
   },
-  profileCardMain: {
-    borderRadius: 10,
-    overflow: "hidden",
-    elevation: 0,
+  textContainer: {
+    flex: 1,
+    marginRight: 10,
   },
-  //   profileImage: {
-  //     width: "100%",
-  //     height: "100%",
-  //   },
-  profileImage: {
-    width: 60,
-    height: 60,
-    borderRadius: 50,
+  categoryTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  categorySubtitle: {
+    fontSize: 14,
+    color: '#666',
+  },
+  categoryImage: {
+    width: 80,
+    height: 80,
+    borderRadius: 8,
+  },
+  footer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    paddingVertical: 10,
+    borderTopWidth: 1,
+    borderColor: '#ccc',
+  },
+  footerButton: {
+    alignItems: 'center',
+  },
+  footerText: {
+    fontSize: 12,
+    color: '#555',
   },
 });
 
-export default Profile;
+export default VendorCategories;
