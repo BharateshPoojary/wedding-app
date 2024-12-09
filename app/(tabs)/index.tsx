@@ -9,7 +9,6 @@ const VendorCategories = () => {
     image: string;
     bgColor: string;
   }
-  const [activeCategory, setActiveCategory] = useState<number | null>(null);
   const [toggleStates, setToggleStates] = useState<{ [key: number]: boolean }>({});
   const categories: Category[] = [
     {
@@ -81,6 +80,7 @@ const VendorCategories = () => {
       image: 'https://image.wedmegood.com/resized/250X/uploads/m_v_cat_image/4/bridal-wear.jpg',
       bgColor: "#CFCDB8"
     },
+
   ];
   const toggleDropdown = (id: number) => {
     setToggleStates((prev) => ({
