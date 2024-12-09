@@ -83,7 +83,6 @@ const VendorCategories = () => {
     },
   ];
   const toggleDropdown = (id: number) => {
-    setActiveCategory((prev) => (prev === id ? null : id));//If the previous Id is equal to current Id  then it will be null so that subcats will not be mapped again if not equal then its a new Id It will be setted to activ.cat state and the subcats are mapped
     setToggleStates((prev) => ({
       ...prev,//using spread operator ensuring all other  ids value remain unchanged
       [id]: !prev[id], // Toggle the state for the given card's id 
@@ -122,7 +121,7 @@ const VendorCategories = () => {
           />
         </View>
       </TouchableOpacity>
-      {activeCategory === item.id && (//if the id is set to null then it will not show
+      {toggleStates[item.id] && (//The logic will only render the subcategories for the category whose id matches the one being toggled (via toggleStates[item.id]), so it knows exactly which subcategories to render based on which category's dropdown is toggled.(the id specific sub cats will be rendered)
         <View style={styles.dropdown}>
           {item.subcategories.map((sub, index) => (
             <Text key={index} style={styles.subcategory}>
